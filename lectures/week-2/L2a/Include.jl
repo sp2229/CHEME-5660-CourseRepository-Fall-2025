@@ -5,11 +5,13 @@ const _PATH_TO_DATA = joinpath(_ROOT, "data");
 const _PATH_TO_FIGS = joinpath(_ROOT, "figs");
 
 # make sure all is up to date -
-using Pkg;
+using Pkg
 if (isfile(joinpath(_ROOT, "Manifest.toml")) == false) # have manifest file, we are good. Otherwise, we need to instantiate the environment
     Pkg.add(path="https://github.com/varnerlab/VLQuantitativeFinancePackage.jl.git")
     Pkg.activate("."); Pkg.resolve(); Pkg.instantiate(); Pkg.update();
 end
+
+# import Pkg; Pkg.activate("."); Pkg.resolve(); Pkg.instantiate(); Pkg.update()
 
 # load external packages -
 using VLQuantitativeFinancePackage
@@ -31,3 +33,7 @@ using DataStructures
 using PrettyTables
 using Flux
 using OneHotArrays
+
+# load my codes -
+include(joinpath(_PATH_TO_SRC, "Files.jl"));
+include(joinpath(_PATH_TO_SRC, "Utility.jl"));
