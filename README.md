@@ -17,17 +17,17 @@ This document walks you through installing four tools and wiring them together s
 
 ---
 
-### 1. Install Anaconda (latest)
+### 1. Install Anaconda (or Miniconda — recommended)
 
 **Windows/macOS/Linux**
 
-1. Download **Anaconda Distribution** and run the installer.
+1. Download **Anaconda Distribution** (or **Miniconda** if you prefer a smaller install) and run the installer.
 2. When asked to “initialize conda,” say **Yes** (this adds `conda` to your shell so `jupyter` works on the command line).
 3. After installation, open a **new terminal** and run:
 
 ```bash
 conda --version
-conda init  # only needed once if the installer didn’t do it
+conda init <your-shell>  # e.g., `conda init zsh` — only needed once if the installer didn’t do it
 ```
 
 > Optional but recommended (keeps course work isolated):
@@ -66,6 +66,8 @@ julia --version
 ```
 
 > If you cannot use juliaup, download the Julia installer/tarball from julialang.org and add the `.../bin` directory to your PATH manually (see §6 and Appendix).
+
+Note: some environments or institutional policies disallow piping a remote script directly to `sh`. If that applies to you, download the juliaup installer or the Julia tarball directly from https://julialang.org and follow the manual installation instructions instead.
 
 ---
 
@@ -210,11 +212,23 @@ In JupyterLab → Launcher → you should see **Julia** listed under **Notebook*
 
 ### 8. Smoke test (end‑to‑end)
 
-1. **Terminal test**:
+1. **Terminal test**: Run the checks appropriate for your platform.
+
+- macOS / Linux (zsh or bash):
 
 ```bash
-which julia  || where julia
-which jupyter || where jupyter
+command -v julia >/dev/null 2>&1 && echo "julia: $(command -v julia)" || echo "julia not found"
+command -v jupyter >/dev/null 2>&1 && echo "jupyter: $(command -v jupyter)" || echo "jupyter not found"
+code --version
+julia --version
+jupyter lab --version
+```
+
+- Windows (PowerShell):
+
+```powershell
+Get-Command julia -ErrorAction SilentlyContinue
+Get-Command jupyter -ErrorAction SilentlyContinue
 code --version
 julia --version
 jupyter lab --version
