@@ -10,14 +10,14 @@ This document walks you through installing four tools and wiring them together s
 > **Accuracy note.** The steps below have been double‑checked against current tooling: macOS uses **zsh** by default (not bash), Windows instructions use the correct **winget** ID for **juliaup**, and VS Code extension IDs/CLI commands are verified.
 
 
-### 0) Before you start
+### Before you start
 
 1. **Close** any terminals you already have open.
 2. You’ll need a normal user account with permission to install software. On managed machines, use your IT‑recommended method.
 
 ---
 
-### 1) Install Anaconda (latest)
+### 1. Install Anaconda (latest)
 
 **Windows/macOS/Linux**
 
