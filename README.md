@@ -45,7 +45,7 @@ jupyter lab --version
 
 ---
 
-### 2) Install Julia
+### 2. Install Julia
 
 Prefer **juliaup** (it manages versions and PATH for you).
 
@@ -69,7 +69,7 @@ julia --version
 
 ---
 
-### 3) Install VS Code
+### 3. Install VS Code
 
 **Windows/macOS/Linux**
 
@@ -87,7 +87,7 @@ code --version
 
 ---
 
-### 4) Install GitHub Desktop
+### 4. Install GitHub Desktop
 
 **Windows/macOS**
 
@@ -98,7 +98,7 @@ code --version
 
 ---
 
-### 5) Add VS Code extensions
+### 5. Add VS Code extensions
 
 Open VS Code, then install these extensions from the Extensions view:
 
@@ -117,8 +117,7 @@ Open VS Code, then install these extensions from the Extensions view:
 
 ---
 
-### 6) Ensure **Julia** and **Jupyter** are on your PATH
-
+### 6. Ensure **Julia** and **Jupyter** are on your PATH
 You should be able to run `julia` and `jupyter` from any terminal. If the smoke test in §8 fails, use the appropriate fixes below.
 
 #### Windows (PowerShell)
@@ -176,8 +175,8 @@ to `~/.bashrc` or `~/.zshrc`, then restart the terminal.
 
 ---
 
-### 7) Wire Julia into Jupyter (IJulia)
-
+### 7. Wire Julia into Jupyter (IJulia)
+To make **Julia** available in Jupyter, you need to install the IJulia package.
 Open a terminal and start Julia:
 
 ```bash
@@ -209,7 +208,7 @@ In JupyterLab → Launcher → you should see **Julia** listed under **Notebook*
 
 ---
 
-### 8) Smoke test (end‑to‑end)
+### 8. Smoke test (end‑to‑end)
 
 1. **Terminal test**:
 
@@ -239,7 +238,7 @@ sum(1:10)
 
 ---
 
-### 9) Common issues & quick fixes
+### 9. Common issues & quick fixes
 
 - **`julia` not found after juliaup install (Windows)**: ensure `%LOCALAPPDATA%\Microsoft\WindowsApps` is on your PATH; sign out/in; open a new PowerShell window.
 - **`jupyter` not found**: run `conda init <your shell>` and open a new terminal; or `conda activate course` if you created that environment.
