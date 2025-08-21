@@ -7,7 +7,8 @@ For more information on the course content, policies, procedures, and schedule, 
 
 This document walks you through installing four tools and wiring them together so you can launch **Julia**, **Jupyter**, and **VS Code** from your terminal on **Windows**, **macOS**, or **Linux**. Follow the steps in order, then run the “Smoke test” at the end.
 
-> **Accuracy note.** The steps below have been double‑checked against current tooling: macOS uses **zsh** by default (not bash), Windows instructions use the correct **winget** ID for **juliaup**, and VS Code extension IDs/CLI commands are verified.
+> **Accuracy note.** The steps below have been double‑checked against current tooling: macOS uses **zsh** by default (not Bash), Windows instructions use the correct **winget** ID for **juliaup**, and VS Code extension IDs/CLI commands are verified.
+
 
 
 ### Before you start
@@ -30,7 +31,7 @@ conda --version
 conda init <your-shell>  # e.g., `conda init zsh` — only needed once if the installer didn’t do it
 ```
 
-> Optional but recommended (keeps course work isolated):
+> Optional but recommended (keeps coursework isolated):
 
 ```bash
 conda create -n course python=3.11 jupyterlab
@@ -192,7 +193,7 @@ using Pkg
 Pkg.add("IJulia")
 ```
 
-This registers a **Julia** kernel with Jupyter. If you activated a conda env named `course`, keep using it for Jupyter:
+This registers a **Julia** kernel with Jupyter. If you activated a conda environment named `course`, continue to launch `jupyter lab` from that environment to ensure kernels align:
 
 ```bash
 conda activate course
@@ -256,7 +257,7 @@ sum(1:10)
 
 - **`julia` not found after juliaup install (Windows)**: ensure `%LOCALAPPDATA%\Microsoft\WindowsApps` is on your PATH; sign out/in; open a new PowerShell window.
 - **`jupyter` not found**: run `conda init <your shell>` and open a new terminal; or `conda activate course` if you created that environment.
-- **Julia kernel missing in Jupyter**: in Julia, run `Pkg.add("IJulia")` again; then restart Jupyter. If multiple Pythons/Jupyters exist, prefer launching `jupyter lab` from the conda env you’ll use for class.
+- **Julia kernel missing in Jupyter**: in Julia, run `Pkg.add("IJulia")` again; then restart Jupyter. If multiple Python/Jupyter installations exist, prefer launching `jupyter lab` from the conda environment you’ll use for class.
 - **`code` not found (macOS)**: run “Shell Command: Install ‘code’ command in PATH” from VS Code.
 - **Permission errors on macOS**: if the terminal lacks Full Disk Access, grant it in **System Settings → Privacy & Security**.
 
