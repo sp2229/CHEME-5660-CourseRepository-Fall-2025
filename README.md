@@ -14,7 +14,7 @@ This document walks you through installing four tools and wiring them together s
 ### Before you start
 
 1. **Close** any terminals you already have open.
-2. You’ll need a normal user account with permission to install software. On managed machines, use your IT‑recommended method.
+2. You will need a normal user account with permission to install software. On managed machines, use your IT‑recommended method.
 
 ---
 
@@ -22,13 +22,13 @@ This document walks you through installing four tools and wiring them together s
 
 **Windows/macOS/Linux**
 
-1. Download **Anaconda Distribution** (or **Miniconda** if you prefer a smaller install) and run the installer.
+1. Download **Anaconda Distribution** (or **Miniconda** if you prefer a smaller install) and run the installer. On Apple Silicon Macs, consider **Miniforge/Miniforge3** as a lightweight conda distribution built for ARM64.
 2. When asked to “initialize conda,” say **Yes** (this adds `conda` to your shell so `jupyter` works on the command line).
 3. After installation, open a **new terminal** and run:
 
 ```bash
 conda --version
-conda init <your-shell>  # e.g., `conda init zsh` — only needed once if the installer didn’t do it
+conda init <your-shell>  # e.g., `conda init zsh` — only needed once if the installer did not do it
 ```
 
 > Optional but recommended (keeps coursework isolated):
@@ -152,7 +152,7 @@ exec zsh    # reloads shell
 jupyter lab --version
 ```
 
-- **Julia via juliaup**: the installer adds `~/.juliaup/bin` to your shell startup file. If `julia` isn’t found, add this to `~/.zshrc` (or `~/.zprofile`) and restart your terminal:
+-- **Julia via juliaup**: the installer adds `~/.juliaup/bin` to your shell startup file. If `julia` is not found, add this to `~/.zshrc` (or `~/.zprofile`) and restart your terminal:
 
 ```bash
 export PATH="$HOME/.juliaup/bin:$PATH"
