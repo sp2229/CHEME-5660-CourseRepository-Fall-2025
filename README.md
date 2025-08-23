@@ -3,8 +3,10 @@ This course is for engineers and scientists interested in quantitative finance a
 
 For more information on the course content, policies, procedures, and schedule, see the [2025-2026 Courses of Study](https://classes.cornell.edu/browse/roster/FA25/class/CHEME/5660).
 
-## Installation Guide
+## Requirements
+This course uses [the Julia programming language](https://julialang.org/downloads/) to introduce fundamental concepts of quantitative finance. We use a variety of tools and languages, such as [Python via the Anaconda distribution](https://www.anaconda.com) and [Jupyter Notebooks](https://jupyter.org), [GitHub Desktop](https://desktop.github.com/) for repository management, [GitHub classroom](https://classroom.github.com) for assignments. Finally, we use [Visual Studio Code (VSCode)](https://code.visualstudio.com/download) for development.
 
+## Installation Guide
 This document walks you through installing four tools and wiring them together so you can launch **Julia**, **Jupyter**, and **VS Code** from your terminal on **Windows**, **macOS**, or **Linux**. Follow the steps in order, then run the “Smoke test” at the end.
 
 > **Accuracy note.** The steps below have been double‑checked against current tooling: macOS uses **zsh** by default (not Bash), Windows instructions use the correct **winget** ID for **juliaup**, and VS Code extension IDs/CLI commands are verified.
