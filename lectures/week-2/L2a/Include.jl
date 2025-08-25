@@ -11,8 +11,6 @@ if (isfile(joinpath(_ROOT, "Manifest.toml")) == false) # have manifest file, we 
     Pkg.activate("."); Pkg.resolve(); Pkg.instantiate(); Pkg.update();
 end
 
-# import Pkg; Pkg.activate("."); Pkg.resolve(); Pkg.instantiate(); Pkg.update()
-
 # load external packages -
 using VLQuantitativeFinancePackage
 using DataFrames
