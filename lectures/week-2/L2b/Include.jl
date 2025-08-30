@@ -11,9 +11,6 @@ if (isfile(joinpath(_ROOT, "Manifest.toml")) == false) # have manifest file, we 
     Pkg.activate("."); Pkg.resolve(); Pkg.instantiate(); Pkg.update();
 end
 
-# Pkg.add(path="https://github.com/varnerlab/VLQuantitativeFinancePackage.jl.git")
-# import Pkg; Pkg.activate("."); Pkg.resolve(); Pkg.instantiate(); Pkg.update()
-
 # load external packages -
 using VLQuantitativeFinancePackage
 using DataFrames
@@ -28,12 +25,7 @@ using StatsPlots
 using JLD2
 using FileIO
 using Distributions
-using LsqFit
-using MathOptInterface
-using DataStructures
 using PrettyTables
-using Flux
-using OneHotArrays
 
 # load my codes -
 include(joinpath(_PATH_TO_SRC, "Files.jl"));
