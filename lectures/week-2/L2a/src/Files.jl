@@ -8,7 +8,7 @@ function _jld2(path::String)::Dict{String,Any}
 end
 
 function MyTreasuryBillDataSet()::DataFrame
-    return _loadcsvfile(joinpath(_PATH_TO_DATA, "US-TBill-Prices-TD-May-Sept-2023.csv"));
+    return _loadcsvfile(joinpath(_PATH_TO_DATA, "US-TBill-Prices-TD-08-30-2025.csv"));
 end
 
 function MyTreasuryNotesAndBondsDataSet()::DataFrame
