@@ -1,3 +1,16 @@
+"""
+    function securityterm(duration::String)::Float64
+
+Convert a security term string (e.g., "6-Month", "1-Year") into a fractional year value. 
+This assumes 365 days per year and 7 days per week.
+
+### Arguments
+- `duration::String`: The security term as a string in the format "X-Unit", where X is a number and Unit is "Week", or "Year".
+
+### Returns
+- `Float64`: The equivalent duration in years.
+
+"""
 function securityterm(duration::String)::Float64
 
     # initialize -
