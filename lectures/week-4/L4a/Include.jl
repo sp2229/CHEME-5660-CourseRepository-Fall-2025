@@ -28,3 +28,4 @@ using Distributions
 using PrettyTables
 using ColorVectorSpace
 using Images
+using HypothesisTests
