@@ -26,6 +26,7 @@ using JLD2
 using FileIO
 using Distributions
 using PrettyTables
+using UnicodePlots
 
 # include some local codes -
 include(joinpath(_PATH_TO_SRC, "Compute.jl"));
