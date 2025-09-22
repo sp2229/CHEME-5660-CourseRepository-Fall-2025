@@ -29,3 +29,4 @@ using PrettyTables
 
 # include some local codes -
 include(joinpath(_PATH_TO_SRC, "Compute.jl"));
+include(joinpath(_PATH_TO_SRC, "Split.jl"));
