@@ -27,6 +27,7 @@ using FileIO
 using Distributions
 using PrettyTables
 using HypothesisTests
+using MathOptInterface
 
 # include some local codes -
 include(joinpath(_PATH_TO_SRC, "Compute.jl"));
