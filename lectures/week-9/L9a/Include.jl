@@ -30,7 +30,14 @@ using PrettyTables
 using StatsBase
 using KernelFunctions
 using HypothesisTests
+using JuMP
+using MadNLP
+using NNlib
+
 
 # load my codes -
-# include(joinpath(_PATH_TO_SRC, "Files.jl"));
-# include(joinpath(_PATH_TO_SRC, "Compute.jl"));
+include(joinpath(_PATH_TO_SRC, "Types.jl"));
+include(joinpath(_PATH_TO_SRC, "Factory.jl"));
+include(joinpath(_PATH_TO_SRC, "Solve.jl"));
+include(joinpath(_PATH_TO_SRC, "Bandits.jl"));
+include(joinpath(_PATH_TO_SRC, "Tables.jl"));
