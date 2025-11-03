@@ -18,3 +18,9 @@ using Statistics
 using Plots
 using Colors
 using PrettyTables
+using CSV
+using Distributions
+using FileIO
+using JLD2
+using HypothesisTests
+using StatsPlots
