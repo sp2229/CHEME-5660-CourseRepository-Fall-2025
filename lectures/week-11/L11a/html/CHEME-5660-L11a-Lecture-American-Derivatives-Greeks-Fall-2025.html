@@ -7482,14 +7482,14 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="L11a:-Sensitivity-Analysis-of-American-Options-Premium">L11a: Sensitivity Analysis of American Options Premium<a class="anchor-link" href="#L11a:-Sensitivity-Analysis-of-American-Options-Premium">¶</a></h1><p>In this lecture, we will explore the sensitivity analysis of American options premium with respect to various parameters. The sensitivity measures, commonly known as the "Greeks," help us understand how the price of an option changes in response to changes in underlying factors.</p>
+<h1 id="L11a:-Sensitivity-Analysis-of-American-Options-Premium">L11a: Sensitivity Analysis of American Options Premium<a class="anchor-link" href="#L11a:-Sensitivity-Analysis-of-American-Options-Premium">¶</a></h1><p>In this lecture, we will explore the sensitivity analysis of American options premium with respect to various parameters. The sensitivity measures, commonly known as the "Greeks," help us understand how the price of an option changes in response to changes in underlying market factors.</p>
 <blockquote>
 <p><strong>Learning Objectives:</strong></p>
 <p>By the end of this lecture, you should be able to:</p>
 <ul>
 <li><strong>Compute the Greeks for American options:</strong> Calculate Delta, Theta, Vega, Rho, and Gamma using the total differential of the options premium function, and understand how each Greek measures the option price sensitivity to changes in underlying asset price, time to expiration, volatility, and interest rates.</li>
 <li><strong>Interpret Delta as a hedge ratio and probability measure:</strong> Apply Delta to determine the number of shares needed to hedge an option position, and use Delta to estimate the probability that an option will expire in-the-money.</li>
-<li><strong>Calculate probability of profit for options contracts:</strong> Compute the probability of profit using projected share price distributions and breakeven points, and compare probability of profit with probability of exercise to assess contract profitability.</li>
+<li><strong>Calculate probability of profit and probability of exercise for options contracts:</strong> Compute the probability of profit using projected share price distributions and breakeven points, and compute the probability of exercise using Delta to estimate the likelihood of finishing in-the-money at the strike price.</li>
 </ul>
 </blockquote>
 <p>Let's get started!
@@ -7644,16 +7644,19 @@ where all the partial derivatives are evaluated at the current market conditions
 <p>We've already seen an example of the hedge ratio interpretation of $\Delta$ in the last example notebook. Let's look at the probability interpretation of $\Delta$. In particular, we can use $\Delta$ to estimate the probability of exercise:</p>
 <blockquote>
 <p><strong>Probability of Exercise (POE):</strong></p>
-<p>The probability of exercise (POE) is the probability that at the <strong>expiration of the (composite or single) contract</strong> at time $t = T$, the share price of the underlying asset $S_{T}$ is at least <code>0.01</code> USD/share greater than the strike price $K$ of the (composite or single) contract, i.e.,
+<p>The probability of exercise (POE) is the probability that at the expiration of the (composite or single) contract at time $t = T$, the option will finish in-the-money, i.e.,
 $$</p>
 </blockquote>
 <p>\boxed{
 \begin{align*}
-\text{POE} &amp; = \mathbb{P}\left(S_{T} &gt; K + 0.01\right)
+\text{POE} &amp; = \begin{cases}
+\mathbb{P}\left(S_{T} &gt; K + 0.01\right) &amp; \text{(for Call Options)} \\
+\mathbb{P}\left(S_{T} &lt; K - 0.01\right) &amp; \text{(for Put Options)}
+\end{cases}
 \end{align*}}
 $$</p>
 <blockquote>
-<p>We'll check the conjecture that $\Delta \approx \text{POE}$ using an example.</p>
+<p>where $S_{T}$ is the share price of the underlying asset at expiration and $K$ is the strike price. We'll check the conjecture that $\Delta \approx \text{POE}$ using an example.</p>
 </blockquote>
 <p>We can also compute the <strong>Probability of Profit (POP)</strong> for an option contract, which is closely related to the probability of exercise.</p>
 <blockquote>
@@ -7691,7 +7694,7 @@ $$</p>
 <ul>
 <li><strong>The Greeks quantify option price sensitivity:</strong> Delta measures sensitivity to underlying price changes, Theta captures time decay, Vega measures volatility sensitivity, Rho tracks interest rate sensitivity, and Gamma measures the rate of change in Delta. These measures are derived from the total differential of the options premium function evaluated at current market conditions.</li>
 <li><strong>Delta serves three distinct purposes:</strong> Delta represents the rate of change in option price per dollar change in underlying price, determines the hedge ratio for constructing delta-neutral positions, and approximates the probability that the option will expire in-the-money.</li>
-<li><strong>Probability of profit differs from probability of exercise:</strong> Probability of exercise estimates whether the option will finish in-the-money at expiration, while probability of profit accounts for the premium paid and estimates whether the position will generate a net profit at expiration.</li>
+<li><strong>Probability of profit differs from probability of exercise:</strong> Probability of exercise (POE) uses Delta to estimate whether the option will finish in-the-money at the strike price, while probability of profit (POP) uses projected distributions at the breakeven point to estimate whether the position will generate a net profit at expiration.</li>
 </ul>
 </blockquote>
 <p>Understanding the Greeks and probability measures enables assessment of option positions and their exposure to different market risk factors.
