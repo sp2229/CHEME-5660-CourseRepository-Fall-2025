@@ -30,6 +30,15 @@ mutable struct MySimpleCobbDouglasChoiceProblem <: AbstractSimpleChoiceProblem
     MySimpleCobbDouglasChoiceProblem() = new();
 end
 
+"""
+    mutable MyEpsilonGreedyAlgorithmModel < : AbstractBanditAlgorithmModel
+
+A mutable struct that defines the epsilon-greedy bandit algorithm model.
+
+### Fields
+- `K::Int64`: The number of arms in each category.
+- `α::Float64`: The learning rate.
+"""
 mutable struct MyEpsilonGreedyAlgorithmModel <: AbstractBanditAlgorithmModel
 
     # data -
@@ -40,6 +49,15 @@ mutable struct MyEpsilonGreedyAlgorithmModel <: AbstractBanditAlgorithmModel
     MyEpsilonGreedyAlgorithmModel() = new();
 end
 
+"""
+    mutable MyEpsilonGreedyDynamicAlgorithmModel < : AbstractBanditAlgorithmModel
+
+A mutable struct that defines the dynamic epsilon-greedy bandit algorithm model.
+
+### Fields
+- `K::Int64`: The number of arms in each category.
+- `α::Float64`: The learning rate.
+"""
 mutable struct MyEpsilonGreedyDynamicAlgorithmModel <: AbstractBanditAlgorithmModel
 
     # data -
@@ -50,6 +68,15 @@ mutable struct MyEpsilonGreedyDynamicAlgorithmModel <: AbstractBanditAlgorithmMo
     MyEpsilonGreedyDynamicAlgorithmModel() = new();
 end
 
+"""
+    mutable MyEpsilonGreedyStaticNoiseAlgorithmModel < : AbstractBanditAlgorithmModel
+
+A mutable struct that defines the static noise epsilon-greedy bandit algorithm model.
+
+### Fields
+- `K::Int64`: The number of arms in each category.
+- `α::Float64`: The learning rate.
+"""
 mutable struct MyEpsilonGreedyStaticNoiseAlgorithmModel <: AbstractBanditAlgorithmModel
 
     # data -
@@ -60,6 +87,15 @@ mutable struct MyEpsilonGreedyStaticNoiseAlgorithmModel <: AbstractBanditAlgorit
     MyEpsilonGreedyStaticNoiseAlgorithmModel() = new();
 end
 
+"""
+    mutable MyEpsilonGreedyDynamicNoiseAlgorithmModel < : AbstractBanditAlgorithmModel
+
+A mutable struct that defines the dynamic noise epsilon-greedy bandit algorithm model.
+
+### Fields
+- `K::Int64`: The number of arms in each category.
+- `α::Float64`: The learning rate.
+"""
 mutable struct MyEpsilonGreedyDynamicNoiseAlgorithmModel <: AbstractBanditAlgorithmModel
 
     # data -
@@ -70,7 +106,18 @@ mutable struct MyEpsilonGreedyDynamicNoiseAlgorithmModel <: AbstractBanditAlgori
     MyEpsilonGreedyDynamicNoiseAlgorithmModel() = new();
 end
 
+"""
+    mutable MyBanditPortfolioAllocationContextModel < : AbstractBanditProblemContextModel
+A mutable struct that defines the bandit portfolio allocation context model.
 
+### Fields
+- `γ::Array{Float64,1}`: Investors preference for each category of goods.
+- `Sₒ::Array{Float64,1}`: Cost of each good.
+- `bounds::Array{Float64,2}`: Bounds on the assets that we can purchase.
+- `B::Float64`: Budget that we have to spend on the collection of assets.
+- `nₒ::Array{Float64,1}`: Initial guess for the solution.
+- `number_of_assets::Int64`: Number of assets that we can purchase.
+"""
 mutable struct MyBanditPortfolioAllocationContextModel <: AbstractBanditProblemContextModel
 
     # data -
@@ -86,6 +133,24 @@ mutable struct MyBanditPortfolioAllocationContextModel <: AbstractBanditProblemC
     MyBanditPortfolioAllocationContextModel() = new();
 end
 
+"""
+    mutable MyDynamicBanditPortfolioAllocationContextModel < : AbstractBanditProblemContextModel
+
+A mutable struct that defines the dynamic bandit portfolio allocation context model.
+
+### Fields
+- `singleindexmodels::Dict{String, NamedTuple}`: Single index models for each asset.
+- `dataset::Dict{String, DataFrame}`: Dataset for each asset.
+- `tickers::Array{String,1}`: Tickers for each asset.
+- `bounds::Array{Float64,2}`: Bounds on the assets that we can purchase.
+- `number_of_assets::Int64`: Number of assets that we can purchase.
+- `B::Float64`: Budget that we have to spend on the collection of assets.
+- `nₒ::Array{Float64,1}`: Initial guess for the solution.
+- `X̄::Array{Float64,2}`: inv(X^T*X)*X^T.
+- `number_of_samples_to_draw::Int64`: Number of samples needed by the error model.
+- `μₒ::Array{Float64,1}`: Initial guess for the mean of the error model.
+- `R̄ₘ::Float64`: Average return of the market (to use in the SIM).
+"""
 mutable struct MyDynamicBanditPortfolioAllocationContextModel <: AbstractBanditProblemContextModel
 
     # data -
@@ -105,6 +170,17 @@ mutable struct MyDynamicBanditPortfolioAllocationContextModel <: AbstractBanditP
     MyDynamicBanditPortfolioAllocationContextModel() = new();
 end
 
+"""
+    mutable MyBanditPortfolioModel
+
+A mutable struct that defines the bandit portfolio model.
+
+### Fields
+- `utility::Float64`: Utility of the portfolio.
+- `n::Array{Float64,1}`: Share array.
+- `a::Array{Int,1}`: Action array.
+- `converged::Bool`: Has the model converged?   
+"""
 struct MyBanditPortfolioModel
 
     # data -
