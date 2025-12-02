@@ -147,3 +147,14 @@ function shares(t::Int64, model::MyInvestorMarketContextModel;
     # return -
     return (shares = n, price = price, gamma = γ, tickers = mylocaltickers, cash = cash_leftover);
 end
+
+function nextprice(model::Union{MyHiddenMarkovModel, MyHiddenMarkovModelWithJumps}, decode::Dict{Int64, Normal}, s::Int64, Sₒ::Float64; 
+    Δt::Float64 = (1.0/252.0), number_of_steps::Int64 = 2)::Tuple{Int64, Float64}
+    
+    # generate the state, decode the state, generate a growth 
+    tmp = model(s, number_of_steps); # call the model, compute the next mood
+    snext = tmp[end,1] # what is the next state?
+    g = snext |> s-> decode[s] |> d -> rand(d) # what is the mood at the next time step?
+    S = Sₒ*exp(g*Δt); # compute the next price
+    return (snext, S); # return the next state and next price
+end
