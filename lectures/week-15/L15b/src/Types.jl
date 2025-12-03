@@ -73,3 +73,19 @@ mutable struct MyInvestorMarketContextModel <: AbstractInvestorContextModel
     # constructor -
     MyInvestorMarketContextModel() = new();
 end
+
+mutable struct MySimpleRobotInvestorContextModel <: AbstractInvestorContextModel
+
+    # data -
+    B::Float64 # total budget for investment (in USD)
+    tickers::Array{String,1} # array of ticker symbols
+    marketfactor::Array{Float64,1} # market factor at current time step
+    marketdata::Array{Float64,2} # market data matrix (rows: time steps, columns: tickers, first column is time)
+    singleindexmodel_parameters::Dict{String, NamedTuple} # single index model parameters for each ticker
+    λ::Float64 # risk aversion parameter
+    Δt::Float64 # time step size
+    ϵ::Float64 # minimum number of shares to buy for non-preferred asset 
+    
+    # constructor -
+    MySimpleRobotInvestorContextModel() = new();
+end

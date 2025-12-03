@@ -148,13 +148,109 @@ function shares(t::Int64, model::MyInvestorMarketContextModel;
     return (shares = n, price = price, gamma = γ, tickers = mylocaltickers, cash = cash_leftover);
 end
 
+function shares(t::Int64, context::MySimpleRobotInvestorContextModel)
+    
+    # initialize -
+    B = context.B;
+    mylocaltickers = context.tickers;
+    marketdata = context.marketdata;
+    ḡₘ = context.marketfactor[t-1]; # market factor at time t
+    λ = context.λ;
+    K = length(mylocaltickers);
+    Δt = context.Δt;
+    singleindexmodel_parameters = context.singleindexmodel_parameters;
+    min_share_purchase = context.ϵ;
+
+    # compute the risk factor array -
+    riskfactors = Array{Float64,1}(undef, K);
+    for i ∈ eachindex(mylocaltickers)
+        ticker = mylocaltickers[i];
+        simmodel = singleindexmodel_parameters[ticker];
+        βᵢ = simmodel.beta;
+        riskfactors[i] = βᵢ^λ;
+    end;
+
+    # compute the fill price -
+    price = Array{Float64,1}(undef, K);
+    for i ∈ eachindex(mylocaltickers)
+        price[i] = marketdata[t,i+1]*(1+0.10*randn()); # add some noise to the price
+    end
+
+    # compute the preference coefficient for each ticker -
+    γ = Array{Float64,1}(undef, K);
+    for i ∈ eachindex(mylocaltickers)
+
+        ticker = mylocaltickers[i];
+        simmodel = singleindexmodel_parameters[ticker];
+        αᵢ = simmodel.alpha;
+        βᵢ = simmodel.beta;
+        RF = riskfactors[i];
+        
+        ĝᵢ = αᵢ/RF + (βᵢ/RF)*(ḡₘ); # expected excess return
+        γ[i] = tanh_fast(ĝᵢ); # preference coefficient
+    end
+
+    n = zeros(K); # initialize space for optimal solution
+    # S = findall(γᵢ -> γᵢ > 0, γ); # Which assets does our preference model tell is to buy?
+    S = 1:K; # TEMPORARY: consider all assets for now
+
+    # In the set of assets to explore, do we have any non-preferred assets?
+    negative_gamma_flag = any(γ[S] .< 0)
+    if (negative_gamma_flag == false && length(S) > 0)
+        
+        # easy case: all of my potential assets are preferred.
+        γ̄ = sum(γ[S]);
+        B̄ = B;
+        for s ∈ S
+            n[s] = (γ[s]/γ̄)*(B̄/price[s]);
+        end
+    else
+
+        # hard case: some assets are *not* preferred. 
+        
+        # Prep work for non-preferred case
+        # First: the non-preferred assets are min_share_purchase -
+        # Second: Compute the adjusted budget
+        # Third: Compute γ̄
+        B̄ = B;
+        γ̄ = 0.0;
+        for s ∈ S
+            if (γ[s] < 0.0)
+                B̄ += -min_share_purchase*price[s];
+                n[s] = min_share_purchase;
+            else
+                γ̄ += γ[s];
+            end
+        end
+
+        # compute the optimal preferred assets -
+        for s ∈ S
+            if (γ[s] ≥ 0.0)
+                n[s] = (γ[s]/γ̄)*(B̄/price[s]);
+            end
+        end
+    end
+
+    # how much did we spend?
+    total_spent = sum(n .* price);
+    cash_leftover = B - total_spent;
+
+    # return -
+    return (shares = n, price = price, gamma = γ, tickers = mylocaltickers, cash = cash_leftover);
+end
+
+"""
+    nextprice(model::Union{MyHiddenMarkovModel, MyHiddenMarkovModelWithJumps}, decode::Dict{Int64, Normal}, s::Int64, Sₒ::Float64; 
+        Δt::Float64 = (1.0/252.0), number_of_steps::Int64 = 2, risk_free_rate::Float64 = 0.0431) -> Tuple{Int64, Float64}
+
+"""
 function nextprice(model::Union{MyHiddenMarkovModel, MyHiddenMarkovModelWithJumps}, decode::Dict{Int64, Normal}, s::Int64, Sₒ::Float64; 
-    Δt::Float64 = (1.0/252.0), number_of_steps::Int64 = 2)::Tuple{Int64, Float64}
+    Δt::Float64 = (1.0/252.0), number_of_steps::Int64 = 2, risk_free_rate::Float64 = 0.0431)::Tuple{Int64, Float64}
     
     # generate the state, decode the state, generate a growth 
     tmp = model(s, number_of_steps); # call the model, compute the next mood
     snext = tmp[end,1] # what is the next state?
     g = snext |> s-> decode[s] |> d -> rand(d) # what is the mood at the next time step?
-    S = Sₒ*exp(g*Δt); # compute the next price
+    S = Sₒ*exp((g)*Δt); # compute the next price
     return (snext, S); # return the next state and next price
 end

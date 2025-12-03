@@ -104,3 +104,29 @@ function build(modeltype::Type{MyInvestorMarketContextModel}, data::NamedTuple):
     # return
     return model;
 end
+
+function build(modeltype::Type{MySimpleRobotInvestorContextModel}, data::NamedTuple)::MySimpleRobotInvestorContextModel
+
+    # initialize -
+    model = modeltype(); # build an empty model
+
+    # Fields required in data NamedTuple:
+    # B::Float64 # total budget for investment (in USD)
+    # tickers::Array{String,1} # array of ticker symbols
+    # marketdata::Array{Float64,2} # market data matrix (rows: time steps, columns: tickers, first column is time)
+    # singleindexmodel_parameters::Dict{String, NamedTuple} # single index model parameters for each ticker
+    # λ::Float64 # risk aversion parameter
+    # Δt::Float64 # time step size (units: years)
+
+    # set the data on the object
+    model.B = data.B;
+    model.tickers = data.tickers;
+    model.marketdata = data.marketdata;
+    model.singleindexmodel_parameters = data.singleindexmodel_parameters;
+    model.λ = data.λ;
+    model.Δt = data.Δt;
+    model.marketfactor = data.marketfactor;
+
+    # return
+    return model;
+end
