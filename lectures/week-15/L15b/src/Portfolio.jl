@@ -148,6 +148,22 @@ function shares(t::Int64, model::MyInvestorMarketContextModel;
     return (shares = n, price = price, gamma = γ, tickers = mylocaltickers, cash = cash_leftover);
 end
 
+"""
+    shares(t::Int64, context::MySimpleRobotInvestorContextModel) -> NamedTuple
+
+Allocate shares for trading day `t` using a simplified robot investor model driven by a market factor
+time series and single-index model parameters.
+
+### Arguments
+- `t::Int64`: Trading-day index used to pull prices and market factor values.
+- `context::MySimpleRobotInvestorContextModel`: Investor context containing budget, tickers, market
+  factor series, market data matrix, SIM parameters, and share floor `ϵ`.
+
+### Returns
+- `NamedTuple`: `(shares, price, gamma, tickers, cash)` where `shares` is the optimal share vector,
+  `price` holds the noisy fill prices used for each ticker, `gamma` are the bounded preference weights,
+  `tickers` preserves the ticker order, and `cash` is any unallocated budget.
+"""
 function shares(t::Int64, context::MySimpleRobotInvestorContextModel)
     
     # initialize -
@@ -157,7 +173,6 @@ function shares(t::Int64, context::MySimpleRobotInvestorContextModel)
     ḡₘ = context.marketfactor[t-1]; # market factor at time t
     λ = context.λ;
     K = length(mylocaltickers);
-    Δt = context.Δt;
     singleindexmodel_parameters = context.singleindexmodel_parameters;
     min_share_purchase = context.ϵ;
 
@@ -173,7 +188,7 @@ function shares(t::Int64, context::MySimpleRobotInvestorContextModel)
     # compute the fill price -
     price = Array{Float64,1}(undef, K);
     for i ∈ eachindex(mylocaltickers)
-        price[i] = marketdata[t,i+1]*(1+0.10*randn()); # add some noise to the price
+        price[i] = marketdata[t,i+1]*(1+0.01*randn()); # add some noise to the price
     end
 
     # compute the preference coefficient for each ticker -
@@ -196,7 +211,7 @@ function shares(t::Int64, context::MySimpleRobotInvestorContextModel)
 
     # In the set of assets to explore, do we have any non-preferred assets?
     negative_gamma_flag = any(γ[S] .< 0)
-    if (negative_gamma_flag == false && length(S) > 0)
+    if (negative_gamma_flag == false)
         
         # easy case: all of my potential assets are preferred.
         γ̄ = sum(γ[S]);
@@ -243,6 +258,21 @@ end
     nextprice(model::Union{MyHiddenMarkovModel, MyHiddenMarkovModelWithJumps}, decode::Dict{Int64, Normal}, s::Int64, Sₒ::Float64; 
         Δt::Float64 = (1.0/252.0), number_of_steps::Int64 = 2, risk_free_rate::Float64 = 0.0431) -> Tuple{Int64, Float64}
 
+Simulate the next latent state and asset price using a hidden Markov model with optional jump dynamics.
+
+### Arguments
+- `model::Union{MyHiddenMarkovModel, MyHiddenMarkovModelWithJumps}`: Stochastic model that maps the
+  current state to a future state path.
+- `decode::Dict{Int64, Normal}`: Mapping from latent state index to a Normal distribution for growth.
+- `s::Int64`: Current latent state.
+- `Sₒ::Float64`: Current asset price.
+- `Δt::Float64`: Time step (years) used to convert growth to price; defaults to one trading day.
+- `number_of_steps::Int64`: How many steps ahead to simulate when drawing the next state.
+- `risk_free_rate::Float64`: Risk-free rate used in the model (currently unused but kept for API parity).
+
+### Returns
+- `Tuple{Int64, Float64}`: `(snext, S)` where `snext` is the simulated next state and `S` is the
+  corresponding next price.
 """
 function nextprice(model::Union{MyHiddenMarkovModel, MyHiddenMarkovModelWithJumps}, decode::Dict{Int64, Normal}, s::Int64, Sₒ::Float64; 
     Δt::Float64 = (1.0/252.0), number_of_steps::Int64 = 2, risk_free_rate::Float64 = 0.0431)::Tuple{Int64, Float64}

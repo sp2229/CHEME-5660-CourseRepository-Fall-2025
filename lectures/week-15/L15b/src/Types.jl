@@ -1,5 +1,22 @@
+"""
+    AbstractWorldModel
+
+Abstract supertype for world models that generate rewards given an action and environment state.
+"""
 abstract type AbstractWorldModel end
+
+"""
+    AbstractSamplingModel
+
+Abstract supertype for bandit-style sampling models that select actions over time.
+"""
 abstract type AbstractSamplingModel end
+
+"""
+    AbstractInvestorContextModel
+
+Abstract supertype for investor context models that combine preferences, risk, and market data.
+"""
 abstract type AbstractInvestorContextModel end
 
 """
@@ -56,6 +73,24 @@ mutable struct MyEpsilonSamplingBanditModel <: AbstractSamplingModel
     MyEpsilonSamplingBanditModel() = new();
 end
 
+"""
+    mutable struct MyInvestorMarketContextModel <: AbstractInvestorContextModel
+
+Investor context that blends ticker-picker preferences with a single-index model (SIM) for allocating
+a fixed budget across tickers.
+
+### Fields
+- `B::Float64`: Total budget available (USD).
+- `tickers::Array{String,1}`: Ordered ticker symbols.
+- `marketdata::Dict{String, DataFrame}`: Historical price data keyed by ticker.
+- `preferences::Dict{Symbol, DataFrame}`: Ticker-picker preference tables keyed by mood.
+- `Ḡₘ::Float64`: Expected excess market return (market factor).
+- `risk_free_rate::Float64`: Annual risk-free rate.
+- `singleindexmodel_parameters::Dict{String, NamedTuple}`: SIM parameters per ticker.
+- `ξ::Float64`: Weight given to ticker-picker preferences in the allocation rule.
+- `mood::Symbol`: Investor mood controlling which preference table is used.
+- `ϵ::Float64`: Minimum number of shares to buy/sell for non-preferred assets.
+"""
 mutable struct MyInvestorMarketContextModel <: AbstractInvestorContextModel
 
     # data -
@@ -74,6 +109,22 @@ mutable struct MyInvestorMarketContextModel <: AbstractInvestorContextModel
     MyInvestorMarketContextModel() = new();
 end
 
+"""
+    mutable struct MySimpleRobotInvestorContextModel <: AbstractInvestorContextModel
+
+Lightweight investor context used by a robot trader that relies on a precomputed market factor series
+and SIM parameters to allocate shares.
+
+### Fields
+- `B::Float64`: Total budget available (USD).
+- `tickers::Array{String,1}`: Ordered ticker symbols.
+- `marketfactor::Array{Float64,1}`: Market factor value at each time step.
+- `marketdata::Array{Float64,2}`: Price matrix (rows: time, columns: tickers, first column is time).
+- `singleindexmodel_parameters::Dict{String, NamedTuple}`: SIM parameters per ticker.
+- `λ::Float64`: Risk-aversion exponent applied to beta.
+- `Δt::Float64`: Time step size (years).
+- `ϵ::Float64`: Minimum number of shares to hold for non-preferred assets.
+"""
 mutable struct MySimpleRobotInvestorContextModel <: AbstractInvestorContextModel
 
     # data -

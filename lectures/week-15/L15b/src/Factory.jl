@@ -74,6 +74,29 @@ function build(modeltype::Type{MyEpsilonSamplingBanditModel}, data::NamedTuple):
     return model;
 end
 
+"""
+    build(modeltype::Type{MyInvestorMarketContextModel}, data::NamedTuple) -> MyInvestorMarketContextModel
+
+Construct an [`MyInvestorMarketContextModel`](@ref) using market data, ticker-picker preferences, and
+single-index model parameters supplied in a `NamedTuple`.
+
+### Arguments
+- `modeltype::Type{MyInvestorMarketContextModel}`: Concrete type to instantiate.
+- `data::NamedTuple`: Source data used to populate the model. Must include:
+  - `B::Float64`: Total budget (USD)
+  - `tickers::Array{String,1}`: Ordered ticker symbols under consideration
+  - `marketdata::Dict{String, DataFrame}`: Historical price data keyed by ticker
+  - `preferences::Dict{Symbol, DataFrame}`: Ticker-picker preference tables keyed by mood
+  - `Ḡₘ::Float64`: Expected excess market return
+  - `risk_free_rate::Float64`: Annual risk-free rate
+  - `singleindexmodel_parameters::Dict{String, NamedTuple}`: SIM parameters per ticker
+  - `ξ::Float64`: Weight applied to the ticker-picker preference score
+  - `mood::Symbol`: Investor mood (:optimistic, :neutral, :pessimistic)
+  - `ϵ::Float64`: Minimum number of shares to buy/sell per trade
+
+### Returns
+- `MyInvestorMarketContextModel`: Model instance populated with the supplied data.
+"""
 function build(modeltype::Type{MyInvestorMarketContextModel}, data::NamedTuple)::MyInvestorMarketContextModel
 
     # initialize -
@@ -105,6 +128,27 @@ function build(modeltype::Type{MyInvestorMarketContextModel}, data::NamedTuple):
     return model;
 end
 
+"""
+    build(modeltype::Type{MySimpleRobotInvestorContextModel}, data::NamedTuple) -> MySimpleRobotInvestorContextModel
+
+Build a [`MySimpleRobotInvestorContextModel`](@ref) using precomputed market factors and SIM parameters
+for a simplified robot investor scenario.
+
+### Arguments
+- `modeltype::Type{MySimpleRobotInvestorContextModel}`: Concrete type to instantiate.
+- `data::NamedTuple`: Source data used to populate the model. Must include:
+  - `B::Float64`: Total budget (USD)
+  - `tickers::Array{String,1}`: Ordered ticker symbols under consideration
+  - `marketdata::Array{Float64,2}`: Price matrix (rows: time, columns: tickers, col1 is time)
+  - `singleindexmodel_parameters::Dict{String, NamedTuple}`: SIM parameters per ticker
+  - `λ::Float64`: Risk-aversion exponent applied to beta
+  - `Δt::Float64`: Time step (years)
+  - `marketfactor::Array{Float64,1}`: Market factor time series aligned with `marketdata`
+  - `ϵ::Float64`: Minimum number of shares to hold for non-preferred assets
+
+### Returns
+- `MySimpleRobotInvestorContextModel`: Model instance populated with the supplied data.
+"""
 function build(modeltype::Type{MySimpleRobotInvestorContextModel}, data::NamedTuple)::MySimpleRobotInvestorContextModel
 
     # initialize -
@@ -126,6 +170,7 @@ function build(modeltype::Type{MySimpleRobotInvestorContextModel}, data::NamedTu
     model.λ = data.λ;
     model.Δt = data.Δt;
     model.marketfactor = data.marketfactor;
+    model.ϵ = data.ϵ;
 
     # return
     return model;
